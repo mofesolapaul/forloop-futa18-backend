@@ -1,7 +1,7 @@
 <?php
 
 namespace Api;
-use Test;
+use Auth;
 
 /**
  * @author
@@ -14,7 +14,7 @@ use Test;
 class v1 extends Base
 {
     protected $classmap = [
-        'test' => Test::class
+        'auth' => \Auth::class
     ];
 
     public function __construct($request)
