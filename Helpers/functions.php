@@ -8,7 +8,7 @@ function statusCode($code)
 {
     $status = array(
         200 => 'OK',
-        400 => 'Bas Request',
+        400 => 'Bad Request',
         404 => 'Not Found',
         405 => 'Method Not Allowed',
         500 => 'Internal Server Error'
@@ -62,4 +62,8 @@ function generateAuthTokens() {
 
 function tokensMatch($token, $digest) {
     return hash_hmac("ripemd160", $token, AUTH_SECRET) == $digest;
+}
+
+function copyValues($array) {
+
 }

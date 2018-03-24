@@ -15,6 +15,11 @@ trait DbTransaction
 {
     protected $db;
 
+    public function __construct()
+    {
+        $this->_init();
+    }
+
     public function _init()
     {
         $this->db = Db::init();
