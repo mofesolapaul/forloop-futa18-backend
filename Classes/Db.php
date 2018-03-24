@@ -18,7 +18,7 @@ class Db
                 static::$db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 static::$is_init = true;
             } catch (\PDOException $exception) {
-                response("Connection error: " . $exception->getMessage(), 500);
+                response("Connection error", 500);
             }
             return static::$db;
         }
