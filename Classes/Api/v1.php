@@ -15,6 +15,5 @@ class v1 extends Base
     public function __construct($request)
     {
         parent::__construct($request);
-        echo "Inside API";
     }
 }

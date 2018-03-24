@@ -10,3 +10,5 @@ switch (strtolower($_GET['api-version'])) {
         $api = new \Api\v1($_GET['api-request']);
         break;
 }
+
+$api->execute();

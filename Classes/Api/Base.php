@@ -12,7 +12,12 @@ namespace Api;
 
 class Base
 {
-    public $method, $entity, $endpoint, $args, $request;
+    // $method: HTTP method, $resource: resource, $endpoint: method
+    public $method, $args;
+    protected $resource, $endpoint;
+    protected $classmap= [
+//        'users' => \Users::class
+    ];
 
     public function __construct($request)
     {
@@ -20,16 +25,35 @@ class Base
         header("Access-Control-Allow-Methods: *");
         header("Content-Type: application/json");
 
-        #!- fetch the args
-        $this->args = explode('/', $request);
-        $this->dieTest();
+        #!- fetch the pieces: expects entity/endpoint/{args}
+        $this->args = sanitize( explode('/', $request));
+        $this->resource = array_shift($this->args);
+        $this->endpoint= array_shift($this->args) ?? 'index'; // use index as default
+        $this->shouldThrowError();
+
+        $this->method = determineHttpMethod();
+    }
+
+    public function execute() {
+        $resource = $this->makeClass($this->resource);
+        if ( method_exists($resource, $this->endpoint) )
+            response($resource->{$this->endpoint}($this->args));
+
+        response("No endpoint: {$this->endpoint}", 404);
+    }
+
+    private function makeClass($classname) {
+        $classname = strtolower($classname);
+        if (!array_key_exists($classname, $this->classmap))
+            response("Invalid resource", 404);
+        return new $this->classmap[$classname];
     }
 
     /**
      * Tests if an exception must be thrown, based on args length
      */
-    private function dieTest()
+    private function shouldThrowError()
     {
-        if (count($this->args) == 0) die($this->_response("Invalid API request", 404));
+        if (!$this->resource || !$this->endpoint) response("Invalid API request", 400);
     }
 }
