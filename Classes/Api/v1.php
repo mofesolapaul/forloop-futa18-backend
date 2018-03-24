@@ -1,6 +1,7 @@
 <?php
 
 namespace Api;
+use Test;
 
 /**
  * @author
@@ -12,6 +13,10 @@ namespace Api;
 
 class v1 extends Base
 {
+    protected $classmap = [
+        'test' => Test::class
+    ];
+
     public function __construct($request)
     {
         parent::__construct($request);
