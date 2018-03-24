@@ -35,14 +35,14 @@ class Base
     }
 
     public function execute() {
-        $resource = $this->makeClass($this->resource);
+        $resource = $this->makeResource($this->resource);
         if ( method_exists($resource, $this->endpoint) )
             response($resource->{$this->endpoint}($this));
 
         response("No endpoint: {$this->endpoint}", 404);
     }
 
-    private function makeClass($classname) {
+    private function makeResource($classname) {
         $classname = strtolower($classname);
         if (!array_key_exists($classname, $this->classmap))
             response("Invalid resource", 404);

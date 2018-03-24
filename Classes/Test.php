@@ -9,6 +9,13 @@
  */
 class Test
 {
+    use \Traits\DbTransaction;
+
+    public function __construct()
+    {
+        $this->_init();
+    }
+
     public function index($request) {
         return "Test Index {$request->method}";
     }
