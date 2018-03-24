@@ -13,6 +13,7 @@ namespace Traits;
 trait AuthenticatesUser
 {
     public function _auth($request) {
+        return true; // disable it
         if (!isset($request['auth_token'])) response("Unauthorized", 401);
         $token = $request['auth_token'];
         $digest = $_COOKIE[COOKIE_AUTH_DIGEST] ?? "";
