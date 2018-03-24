@@ -9,5 +9,13 @@
  */
 class User
 {
+    use \Traits\DbTransaction;
+    use \Traits\HttpMethodCheck;
+    use \Traits\AuthenticatesUser;
 
+    public function index($request) {
+//        $this->_checkMethod("POST", $request->method);
+        $this->_auth($request->request);
+        return "Users!";
+    }
 }

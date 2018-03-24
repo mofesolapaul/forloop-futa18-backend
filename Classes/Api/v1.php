@@ -14,7 +14,8 @@ use Auth;
 class v1 extends Base
 {
     protected $classmap = [
-        'auth' => \Auth::class
+        'auth' => \Auth::class,
+        'user' => \User::class,
     ];
 
     public function __construct($request)

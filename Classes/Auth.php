@@ -15,7 +15,7 @@ class Auth
     public function index($request) {
 //        $this->_checkMethod('POST', $request->method);
         $keys = generateAuthTokens();
-        setcookie(COOKIE_AUTH_DIGEST, $keys['auth_digest'], strtotime("+100 days"), '', '', false, true);
+        setcookie(COOKIE_AUTH_DIGEST, $keys['auth_digest'], strtotime("+100 days"), '/', '', false, true);
         return $keys;
     }
 }

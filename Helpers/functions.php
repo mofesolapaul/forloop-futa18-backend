@@ -59,3 +59,7 @@ function generateAuthTokens() {
         'auth_digest' => $digest
     ];
 }
+
+function tokensMatch($token, $digest) {
+    return hash_hmac("ripemd160", $token, AUTH_SECRET) == $digest;
+}

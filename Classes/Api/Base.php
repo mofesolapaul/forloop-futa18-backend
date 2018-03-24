@@ -13,7 +13,7 @@ namespace Api;
 class Base
 {
     // $method: HTTP method, $resource: resource, $endpoint: method
-    public $method, $args;
+    public $method, $args, $request;
     protected $resource, $endpoint;
     protected $classmap= [
 //        'users' => \Users::class
@@ -32,6 +32,14 @@ class Base
         $this->shouldThrowError();
 
         $this->method = determineHttpMethod();
+        switch ($this->method) {
+            case 'GET':
+                $this->request = sanitize($_GET);
+                break;
+            case 'POST':
+                $this->request = sanitize($_POST);
+                break;
+        }
     }
 
     public function execute() {
