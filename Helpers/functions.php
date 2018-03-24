@@ -18,6 +18,10 @@ function statusCode($code)
 
 function response($data, $code = 200) {
     header("HTTP/1.1 {$code} " . statusCode($code));
+    $data = [
+        'status' => $code == 200? true:false,
+        'data' => $data
+    ];
     echo json_encode($data);
     exit(0);
 }
@@ -45,4 +49,17 @@ function sanitize($data) {
     else
         $cleaned = trim(strip_tags($data));
     return $cleaned;
+}
+
+function generateAuthTokens() {
+    $token = hash('sha256', sha1(microtime()) . md5(rand()));
+    $digest = hash_hmac("ripemd160", $token, AUTH_SECRET);
+    return [
+        'auth_token' => $token,
+        'auth_digest' => $digest
+    ];
+}
+
+function tokensMatch($token, $digest) {
+    return hash_hmac("ripemd160", $token, AUTH_SECRET) == $digest;
 }

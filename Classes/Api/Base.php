@@ -13,7 +13,7 @@ namespace Api;
 class Base
 {
     // $method: HTTP method, $resource: resource, $endpoint: method
-    public $method, $args;
+    public $method, $args, $request;
     protected $resource, $endpoint;
     protected $classmap= [
 //        'users' => \Users::class
@@ -32,17 +32,25 @@ class Base
         $this->shouldThrowError();
 
         $this->method = determineHttpMethod();
+        switch ($this->method) {
+            case 'GET':
+                $this->request = sanitize($_GET);
+                break;
+            case 'POST':
+                $this->request = sanitize($_POST);
+                break;
+        }
     }
 
     public function execute() {
-        $resource = $this->makeClass($this->resource);
+        $resource = $this->makeResource($this->resource);
         if ( method_exists($resource, $this->endpoint) )
             response($resource->{$this->endpoint}($this));
 
         response("No endpoint: {$this->endpoint}", 404);
     }
 
-    private function makeClass($classname) {
+    private function makeResource($classname) {
         $classname = strtolower($classname);
         if (!array_key_exists($classname, $this->classmap))
             response("Invalid resource", 404);
