@@ -26,7 +26,7 @@ class Base
         header("Content-Type: application/json");
 
         #!- fetch the pieces: expects entity/endpoint/{args}
-        $this->args = sanitize( explode('/', $request));
+        $this->args = sanitize( preg_split('#/#', $request, -1, PREG_SPLIT_NO_EMPTY));
         $this->resource = array_shift($this->args);
         $this->endpoint= array_shift($this->args) ?? 'index'; // use index as default
         $this->shouldThrowError();
@@ -37,7 +37,7 @@ class Base
     public function execute() {
         $resource = $this->makeClass($this->resource);
         if ( method_exists($resource, $this->endpoint) )
-            response($resource->{$this->endpoint}($this->args));
+            response($resource->{$this->endpoint}($this));
 
         response("No endpoint: {$this->endpoint}", 404);
     }
@@ -50,7 +50,7 @@ class Base
     }
 
     /**
-     * Tests if an exception must be thrown, based on args length
+     * Tests if an exception must be thrown, based on presence of necessary parts
      */
     private function shouldThrowError()
     {

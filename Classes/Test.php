@@ -9,7 +9,7 @@
  */
 class Test
 {
-    public function index() {
-        return "Test Index";
+    public function index($request) {
+        return "Test Index {$request->method}";
     }
 }
